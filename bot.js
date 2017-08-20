@@ -36,15 +36,34 @@ if (!process.env.verify_token) {
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
 
-// Create the Botkit controller, which controls all instances of the bot.
-var controller = Botkit.facebookbot({
-    // debug: true,
+var bot_options = {
     receive_via_postback: true,
     verify_token: process.env.verify_token,
     access_token: process.env.page_token,
     studio_token: process.env.studio_token,
     studio_command_uri: process.env.studio_command_uri,
-});
+}
+
+// Set database
+if (process.env.MONGO_URI) {
+    var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
+    bot_options.storage = mongoStorage;
+} else {
+    bot_options.json_file_store = __dirname + '/.data/db/';
+}
+
+// Create the Botkit controller, which controls all instances of the bot.
+var controller = Botkit.facebookbot(bot_options);
+
+
+// db test
+controller.storage.users.save({id: "1", foo: "bar"}, function(err, id) {
+    console.log(id);
+    controller.storage.users.get("1", function(err, user) {
+        console.log(err);
+        console.log(user);
+    })
+})
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);

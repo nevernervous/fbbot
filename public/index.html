@@ -7,12 +7,13 @@
 
           window.fbAsyncInit = function() {
             FB.init({
-              appId: "MY_APP_ID",
+              appId: "1434135540007577",
               xfbml: true,
               version: "v2.6"
             });
 
             FB.Event.subscribe('send_to_messenger', function(e) {
+              console.log(e);
               // callback for events triggered by the plugin
               if (e.event == 'clicked') {
                   window.location = 'success.html';
@@ -28,9 +29,6 @@
              fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
 
-
-
-
         </script>
     </head>
     <body>
@@ -38,8 +36,8 @@
             <div>
 
                 <div class="fb-send-to-messenger"
-                  messenger_app_id="MY_APP_ID"
-                  page_id="MY_PAGE_ID"
+                  messenger_app_id="1434135540007577"
+                  page_id="1466888313386710"
                   data-ref="PASS_THROUGH_PARAM"
                   color="blue"
                   size="xlarge">
